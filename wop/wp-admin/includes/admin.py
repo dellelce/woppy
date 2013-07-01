@@ -1,0 +1,25 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
+if !defined("WP_ADMIN"):
+  load_textdomain("default", WP_LANG_DIR+"/admin-"+get_locale()+".mo")
+require_once(ABSPATH+"wp-admin/includes/bookmark.php")
+require_once(ABSPATH+"wp-admin/includes/comment.php")
+require_once(ABSPATH+"wp-admin/includes/file.php")
+require_once(ABSPATH+"wp-admin/includes/image.php")
+require_once(ABSPATH+"wp-admin/includes/media.php")
+require_once(ABSPATH+"wp-admin/includes/import.php")
+require_once(ABSPATH+"wp-admin/includes/misc.php")
+require_once(ABSPATH+"wp-admin/includes/plugin.php")
+require_once(ABSPATH+"wp-admin/includes/post.php")
+require_once(ABSPATH+"wp-admin/includes/screen.php")
+require_once(ABSPATH+"wp-admin/includes/taxonomy.php")
+require_once(ABSPATH+"wp-admin/includes/template.php")
+require_once(ABSPATH+"wp-admin/includes/class-wp-list-table.php")
+require_once(ABSPATH+"wp-admin/includes/list-table.php")
+require_once(ABSPATH+"wp-admin/includes/theme.php")
+require_once(ABSPATH+"wp-admin/includes/user.php")
+require_once(ABSPATH+"wp-admin/includes/update.php")
+require_once(ABSPATH+"wp-admin/includes/deprecated.php")
+if is_multisite():
+  require_once(ABSPATH+"wp-admin/includes/ms.php")
+  require_once(ABSPATH+"wp-admin/includes/ms-deprecated.php")

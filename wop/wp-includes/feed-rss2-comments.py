@@ -1,0 +1,63 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
+header("Content-Type: "+feed_content_type("rss-http")+"; charset="+get_option("blog_charset"), True)
+print("<?xml version="1.0" encoding=""+get_option("blog_charset")+""?"+">")
+print("<rss version="2.0"\n	xmlns:content="http://purl.org/rss/1.0/modules/content/"\n	xmlns:dc="http://purl.org/dc/elements/1.1/"\n	xmlns:atom="http://www.w3.org/2005/Atom"\n	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"\n	")
+do_action("rss2_ns")
+do_action("rss2_comments_ns")
+print("	>\n<channel>\n	<title>")
+if is_singular():
+  printf(ent2ncr(__("Comments on: %s")), get_the_title_rss())
+elif is_search():
+  printf(ent2ncr(__("Comments for %1$s searching on %2$s")), get_bloginfo_rss("name"), get_search_query())
+else:
+  printf(ent2ncr(__("Comments for %s")), get_bloginfo_rss("name")+get_wp_title_rss())
+print("</title>\n	<atom:link href="")
+self_link()
+print("" rel="self" type="application/rss+xml" />\n	<link>")
+the_permalink_rss() if is_single() else bloginfo_rss("url")
+print("</link>\n	<description>")
+bloginfo_rss("description")
+print("</description>\n	<lastBuildDate>")
+print(mysql2date("r", get_lastcommentmodified("GMT")))
+print("</lastBuildDate>\n	<sy:updatePeriod>")
+print(apply_filters("rss_update_period", "hourly"))
+print("</sy:updatePeriod>\n	<sy:updateFrequency>")
+print(apply_filters("rss_update_frequency", "1"))
+print("</sy:updateFrequency>\n	")
+do_action("commentsrss2_head")
+if have_comments():
+  while :
+    the_comment()
+    comment_post = GLOBALS["post"] = get_post(comment.comment_post_ID)
+    print("	<item>\n		<title>")
+    if !is_singular():
+      title = get_the_title(comment_post.ID)
+      title = apply_filters("the_title_rss", title)
+      printf(ent2ncr(__("Comment on %1$s by %2$s")), title, get_comment_author_rss())
+    else:
+      printf(ent2ncr(__("By: %s")), get_comment_author_rss())
+    print("</title>\n		<link>")
+    comment_link()
+    print("</link>\n		<dc:creator>")
+    print(get_comment_author_rss())
+    print("</dc:creator>\n		<pubDate>")
+    print(mysql2date("D, d M Y H:i:s +0000", get_comment_time("Y-m-d H:i:s", True, False), False))
+    print("</pubDate>\n		<guid isPermaLink="false">")
+    comment_guid()
+    print("</guid>\n")
+    if post_password_required(comment_post):
+      print("		<description>")
+      print(ent2ncr(__("Protected Comments: Please enter your password to view comments.")))
+      print("</description>\n		<content:encoded><![CDATA[")
+      print(get_the_password_form())
+      print("]]></content:encoded>\n")
+    else:
+      print("\n		<description><![CDATA[")
+      comment_text_rss()
+      print("]]></description>\n		<content:encoded><![CDATA[")
+      comment_text()
+      print("]]></content:encoded>\n")
+    do_action("commentrss2_item", comment.comment_ID, comment_post.ID)
+    print("	</item>\n")
+print("</channel>\n</rss>\n")

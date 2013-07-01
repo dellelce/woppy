@@ -1,0 +1,95 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
+_deprecated_file(sprintf(__("Theme without %1$s"), basename("wop/wp-includes/theme-compat/comments.php")), "3.0", , sprintf(__("Please include a %1$s template in your theme."), basename("wop/wp-includes/theme-compat/comments.php")))
+if !empty(_SERVER["SCRIPT_FILENAME"])&&"comments.php"==basename(_SERVER["SCRIPT_FILENAME"]):
+  die("Please do not load this page directly. Thanks!")
+if post_password_required():
+  print("		<p class="nocomments">")
+  _e("This post is password protected. Enter the password to view comments.")
+  print("</p>\n	")
+  return 
+print("\n<!-- You can start editing here. -->\n\n")
+if have_comments():
+  print("	<h3 id="comments">")
+  printf(_n("One Response to %2$s", "%1$s Responses to %2$s", get_comments_number()), number_format_i18n(get_comments_number()), "&#8220;"+get_the_title()+"&#8221;")
+  print("</h3>\n\n	<div class="navigation">\n		<div class="alignleft">")
+  previous_comments_link()
+  print("</div>\n		<div class="alignright">")
+  next_comments_link()
+  print("</div>\n	</div>\n\n	<ol class="commentlist">\n	")
+  wp_list_comments()
+  print("	</ol>\n\n	<div class="navigation">\n		<div class="alignleft">")
+  previous_comments_link()
+  print("</div>\n		<div class="alignright">")
+  next_comments_link()
+  print("</div>\n	</div>\n ")
+else:
+  print("\n\n	")
+  if comments_open():
+    print("		<!-- If comments are open, but there are no comments. -->\n\n	 ")
+  else:
+    print("\n		<!-- If comments are closed. -->\n		<p class="nocomments">")
+    _e("Comments are closed.")
+    print("</p>\n\n	")
+print("\n")
+if comments_open():
+  print("\n<div id="respond">\n\n<h3>")
+  comment_form_title(__("Leave a Reply"), __("Leave a Reply to %s"))
+  print("</h3>\n\n<div id="cancel-comment-reply">\n	<small>")
+  cancel_comment_reply_link()
+  print("</small>\n</div>\n\n")
+  if get_option("comment_registration")&&!is_user_logged_in():
+    print("<p>")
+    printf(__("You must be <a href="%s">logged in</a> to post a comment."), wp_login_url(get_permalink()))
+    print("</p>\n")
+  else:
+    print("\n<form action="")
+    print(get_option("siteurl"))
+    print("/wp-comments-post.php" method="post" id="commentform">\n\n")
+    if is_user_logged_in():
+      print("\n<p>")
+      printf(__("Logged in as <a href="%1$s">%2$s</a>."), get_edit_user_link(), user_identity)
+      print(" <a href="")
+      print(wp_logout_url(get_permalink()))
+      print("" title="")
+      esc_attr_e("Log out of this account")
+      print("">")
+      _e("Log out &raquo;")
+      print("</a></p>\n\n")
+    else:
+      print("\n<p><input type="text" name="author" id="author" value="")
+      print(esc_attr(comment_author))
+      print("" size="22" tabindex="1" ")
+      if req:
+        print("aria-required='true'")
+      print(" />\n<label for="author"><small>")
+      _e("Name")
+      print(" ")
+      if req:
+        _e("(required)")
+      print("</small></label></p>\n\n<p><input type="text" name="email" id="email" value="")
+      print(esc_attr(comment_author_email))
+      print("" size="22" tabindex="2" ")
+      if req:
+        print("aria-required='true'")
+      print(" />\n<label for="email"><small>")
+      _e("Mail (will not be published)")
+      print(" ")
+      if req:
+        _e("(required)")
+      print("</small></label></p>\n\n<p><input type="text" name="url" id="url" value="")
+      print(esc_attr(comment_author_url))
+      print("" size="22" tabindex="3" />\n<label for="url"><small>")
+      _e("Website")
+      print("</small></label></p>\n\n")
+    print("\n<!--<p><small>")
+    printf(__("<strong>XHTML:</strong> You can use these tags: <code>%s</code>"), allowed_tags())
+    print("</small></p>-->\n\n<p><textarea name="comment" id="comment" cols="58" rows="10" tabindex="4"></textarea></p>\n\n<p><input name="submit" type="submit" id="submit" tabindex="5" value="")
+    esc_attr_e("Submit Comment")
+    print("" />\n")
+    comment_id_fields()
+    print("</p>\n")
+    do_action("comment_form", post.ID)
+    print("\n</form>\n\n")
+  print("\n</div>\n\n")
+print("\n")

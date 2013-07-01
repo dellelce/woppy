@@ -1,0 +1,17 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
+print("\n<article id="post-")
+the_ID()
+print("" ")
+post_class("intro")
+print(">\n	<header class="entry-header">\n		<h2 class="entry-title">")
+the_title()
+print("</h2>\n	</header><!-- .entry-header -->\n\n	<div class="entry-content">\n		")
+the_content()
+print("		")
+wp_link_pages({"before":"<div class="page-link"><span>"+__("Pages:", "twentyeleven")+"</span>", "after":"</div>"})
+print("		")
+edit_post_link(__("Edit", "twentyeleven"), "<span class="edit-link">", "</span>")
+print("	</div><!-- .entry-content -->\n</article><!-- #post-")
+the_ID()
+print(" -->\n")

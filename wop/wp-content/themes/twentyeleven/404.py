@@ -1,0 +1,22 @@
+#!/usr/bin/python
+#-*- coding: utf-8 -*-
+get_header()
+print("\n	<div id="primary">\n		<div id="content" role="main">\n\n			<article id="post-0" class="post error404 not-found">\n				<header class="entry-header">\n					<h1 class="entry-title">")
+_e("This is somewhat embarrassing, isn&rsquo;t it?", "twentyeleven")
+print("</h1>\n				</header>\n\n				<div class="entry-content">\n					<p>")
+_e("It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching, or one of the links below, can help.", "twentyeleven")
+print("</p>\n\n					")
+get_search_form()
+print("\n					")
+the_widget("WP_Widget_Recent_Posts", {"number":10}, {"widget_id":"404"})
+print("\n					<div class="widget">\n						<h2 class="widgettitle">")
+_e("Most Used Categories", "twentyeleven")
+print("</h2>\n						<ul>\n						")
+wp_list_categories({"orderby":"count", "order":"DESC", "show_count":1, "title_li":"", "number":10})
+print("						</ul>\n					</div>\n\n					")
+archive_content = "<p>"+sprintf(__("Try looking in the monthly archives. %1$s", "twentyeleven"), convert_smilies(":)"))+"</p>"
+the_widget("WP_Widget_Archives", {"count":0, "dropdown":1}, {"after_title":"</h2>"+archive_content})
+print("\n					")
+the_widget("WP_Widget_Tag_Cloud")
+print("\n				</div><!-- .entry-content -->\n			</article><!-- #post-0 -->\n\n		</div><!-- #content -->\n	</div><!-- #primary -->\n\n")
+get_footer()
